@@ -4,11 +4,8 @@ import demo.god.model.Student;
 import demo.god.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -47,17 +44,5 @@ public class StudentServiceImpl implements StudentService {
     public void deleteStudent(int id) {
         String sql = "DELETE FROM demo WHERE id = ?";
         jdbcTemplate.update(sql, id);
-    }
-
-    private static class StudentRowMapper implements RowMapper<Student> {
-        @Override
-        public Student mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Student student = new Student();
-            student.setId(rs.getInt("id"));
-            student.setName(rs.getString("name"));
-            student.setSurname(rs.getString("surname"));
-            student.setAge(rs.getInt("age"));
-            return student;
-        }
     }
 }
