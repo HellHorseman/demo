@@ -23,8 +23,30 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public void saveStudent(Student student) {
-        String sql = "INSERT INTO demo (id, name, surname, age) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, student.getId(), student.getName(), student.getSurname(), student.getAge());
+        String sql = "INSERT INTO demo (name, surname, age) VALUES (?, ?, ?)";
+        jdbcTemplate.update(sql, student.getName(), student.getSurname(), student.getAge());
+    }
+
+    public Student getStudentById(int id) {
+        String sql = "SELECT * FROM demo WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{id}, new StudentRowMapper());
+    }
+
+    public Student updateStudent(int id, Student student) {
+        Student existing = getStudentById(id);
+        if (existing != null) {
+            String sql = "UPDATE demo SET age = ?, name = ?, surname = ? WHERE id = ?";
+            jdbcTemplate.update(sql, student.getAge(), student.getName(), student.getSurname(), id);
+            existing.setAge(student.getAge());
+            existing.setName(student.getName());
+            existing.setSurname(student.getSurname());
+        }
+        return existing;
+    }
+
+    public void deleteStudent(int id) {
+        String sql = "DELETE FROM demo WHERE id = ?";
+        jdbcTemplate.update(sql, id);
     }
 
     private static class StudentRowMapper implements RowMapper<Student> {
