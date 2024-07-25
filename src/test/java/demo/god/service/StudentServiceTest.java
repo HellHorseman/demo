@@ -65,7 +65,6 @@ public class StudentServiceTest {
         student.setSurname("Doe");
         student.setAge(20);
 
-        // Установка поведения для метода update
         when(jdbcTemplate.update(anyString(), any(), any(), any())).thenReturn(1);
 
         studentService.saveStudent(student);
@@ -118,7 +117,6 @@ public class StudentServiceTest {
 
     @Test
     public void testDeleteStudent() {
-        // Установка поведения для метода update
         when(jdbcTemplate.update(anyString(), anyInt())).thenReturn(1);
 
         studentService.deleteStudent(1);
